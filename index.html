@@ -1,1 +1,599 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        :root {
+            --bg: #0a0a0f;
+            --surface: #12121a;
+            --card: #1a1a2e;
+            --border: #2a2a3e;
+            --text: #e4e4ef;
+            --muted: #8888a0;
+            --accent: #6366f1;
+            --accent2: #8b5cf6;
+            --gradient: linear-gradient(135deg, #6366f1, #8b5cf6, #d946ef);
+        }
 
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.7;
+            overflow-x: hidden;
+        }
+
+        /* Animated background */
+        .bg-glow {
+            position: fixed;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at 30% 50%, rgba(99,102,241,0.08) 0%, transparent 50%),
+                        radial-gradient(circle at 70% 80%, rgba(139,92,246,0.06) 0%, transparent 50%);
+            animation: float 20s ease-in-out infinite;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            33% { transform: translate(2%, -2%) rotate(1deg); }
+            66% { transform: translate(-1%, 1%) rotate(-1deg); }
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 24px;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 20px 0;
+            background: rgba(10,10,15,0.8);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+            z-index: 100;
+        }
+
+        nav .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-weight: 700;
+            font-size: 1.2rem;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 32px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--muted);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover { color: var(--text); }
+
+        /* Hero */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            padding: 120px 0 80px;
+        }
+
+        .hero-content {
+            animation: fadeUp 0.8s ease-out;
+        }
+
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 16px;
+            background: rgba(99,102,241,0.1);
+            border: 1px solid rgba(99,102,241,0.3);
+            border-radius: 100px;
+            font-size: 0.85rem;
+            color: var(--accent);
+            margin-bottom: 24px;
+        }
+
+        .hero-badge::before {
+            content: '';
+            width: 8px;
+            height: 8px;
+            background: #22c55e;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .hero h1 {
+            font-size: clamp(2.5rem, 6vw, 4rem);
+            font-weight: 800;
+            line-height: 1.1;
+            margin-bottom: 16px;
+        }
+
+        .hero h1 span {
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero p {
+            font-size: 1.15rem;
+            color: var(--muted);
+            max-width: 560px;
+            margin-bottom: 36px;
+        }
+
+        .hero-actions {
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 28px;
+            border-radius: 12px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+
+        .btn-primary {
+            background: var(--gradient);
+            color: white;
+            box-shadow: 0 4px 20px rgba(99,102,241,0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(99,102,241,0.4);
+        }
+
+        .btn-outline {
+            border: 1px solid var(--border);
+            color: var(--text);
+            background: var(--surface);
+        }
+
+        .btn-outline:hover {
+            border-color: var(--accent);
+            background: rgba(99,102,241,0.05);
+        }
+
+        /* Sections */
+        section {
+            padding: 80px 0;
+        }
+
+        .section-label {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+            color: var(--accent);
+            margin-bottom: 8px;
+        }
+
+        .section-title {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 40px;
+        }
+
+        /* About */
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            align-items: start;
+        }
+
+        .about-text p {
+            color: var(--muted);
+            margin-bottom: 16px;
+        }
+
+        .about-stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        .stat-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 24px;
+            text-align: center;
+            transition: transform 0.3s, border-color 0.3s;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-4px);
+            border-color: var(--accent);
+        }
+
+        .stat-card .number {
+            font-size: 2rem;
+            font-weight: 800;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .stat-card .label {
+            font-size: 0.85rem;
+            color: var(--muted);
+            margin-top: 4px;
+        }
+
+        /* Skills */
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            gap: 12px;
+        }
+
+        .skill-tag {
+            padding: 12px 20px;
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            text-align: center;
+            transition: all 0.3s;
+        }
+
+        .skill-tag:hover {
+            border-color: var(--accent);
+            background: rgba(99,102,241,0.08);
+            transform: translateY(-2px);
+        }
+
+        /* Projects */
+        .projects-grid {
+            display: grid;
+            gap: 20px;
+        }
+
+        .project-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 32px;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .project-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: var(--gradient);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .project-card:hover {
+            border-color: var(--accent);
+            transform: translateY(-4px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+        }
+
+        .project-card:hover::before { opacity: 1; }
+
+        .project-card h3 {
+            font-size: 1.2rem;
+            margin-bottom: 8px;
+        }
+
+        .project-card h3 a {
+            color: var(--text);
+            text-decoration: none;
+        }
+
+        .project-card h3 a:hover { color: var(--accent); }
+
+        .project-card p {
+            color: var(--muted);
+            font-size: 0.95rem;
+            margin-bottom: 16px;
+        }
+
+        .project-tech {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .project-tech span {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            padding: 4px 12px;
+            background: rgba(99,102,241,0.1);
+            color: var(--accent);
+            border-radius: 6px;
+        }
+
+        /* Contact */
+        .contact-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 48px;
+            text-align: center;
+        }
+
+        .contact-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 12px;
+        }
+
+        .contact-card p {
+            color: var(--muted);
+            margin-bottom: 28px;
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+        }
+
+        .social-links a {
+            width: 48px;
+            height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            color: var(--muted);
+            font-size: 1.2rem;
+            transition: all 0.3s;
+        }
+
+        .social-links a:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+            transform: translateY(-3px);
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 40px 0;
+            color: var(--muted);
+            font-size: 0.85rem;
+            border-top: 1px solid var(--border);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-links { display: none; }
+            .about-grid { grid-template-columns: 1fr; }
+            .hero h1 { font-size: 2.2rem; }
+            section { padding: 60px 0; }
+            .contact-card { padding: 32px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-glow"></div>
+
+    <nav>
+        <div class="container">
+            <div class="logo" id="nav-logo"></div>
+            <ul class="nav-links">
+                <li><a href="#about">About</a></li>
+                <li><a href="#skills">Skills</a></li>
+                <li><a href="#projects">Projects</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container">
+        <!-- HERO -->
+        <div class="hero">
+            <div class="hero-content">
+                <div class="hero-badge" id="hero-badge"></div>
+                <h1 id="hero-title"></h1>
+                <p id="hero-subtitle"></p>
+                <div class="hero-actions">
+                    <a href="#projects" class="btn btn-primary">View My Work <i class="fas fa-arrow-right"></i></a>
+                    <a href="#contact" class="btn btn-outline">Get In Touch</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- ABOUT -->
+        <section id="about">
+            <div class="section-label">01 — About</div>
+            <h2 class="section-title">Who I Am</h2>
+            <div class="about-grid">
+                <div class="about-text" id="about-text"></div>
+                <div class="about-stats" id="about-stats"></div>
+            </div>
+        </section>
+
+        <!-- SKILLS -->
+        <section id="skills">
+            <div class="section-label">02 — Skills</div>
+            <h2 class="section-title">Tech Stack</h2>
+            <div class="skills-grid" id="skills-grid"></div>
+        </section>
+
+        <!-- PROJECTS -->
+        <section id="projects">
+            <div class="section-label">03 — Projects</div>
+            <h2 class="section-title">Featured Work</h2>
+            <div class="projects-grid" id="projects-grid"></div>
+        </section>
+
+        <!-- CONTACT -->
+        <section id="contact">
+            <div class="section-label">04 — Contact</div>
+            <h2 class="section-title">Let's Connect</h2>
+            <div class="contact-card">
+                <h3>Have a project in mind?</h3>
+                <p>Feel free to reach out — I'm always open to new opportunities and collaborations.</p>
+                <div class="social-links" id="social-links"></div>
+            </div>
+        </section>
+    </div>
+
+    <footer>
+        <p id="footer-text"></p>
+    </footer>
+
+    <script>
+    // ============================================================
+    //  ⚡ EDIT ONLY THIS SECTION — Everything else is automatic
+    // ============================================================
+
+    const CONFIG = {
+        name: "Your Name",
+        role: "Full Stack Developer",
+        tagline: "I build clean, scalable web applications with a focus on performance and user experience.",
+        available: true,  // shows green "Available" badge
+
+        about: [
+            "I'm a passionate developer based in [City, Country] with [X] years of experience building web applications.",
+            "I specialize in [your specialty] and love turning complex problems into elegant solutions."
+        ],
+
+        stats: [
+            { number: "3+", label: "Years Experience" },
+            { number: "15+", label: "Projects Built" },
+            { number: "10+", label: "Open Source" },
+            { number: "5+", label: "Technologies" }
+        ],
+
+        skills: [
+            "JavaScript", "TypeScript", "React", "Node.js",
+            "Python", "PostgreSQL", "Docker", "Git",
+            "Tailwind CSS", "Next.js", "AWS", "Figma"
+        ],
+
+        projects: [
+            {
+                title: "Project Name One",
+                description: "A brief description of what this project does and the problem it solves.",
+                link: "https://github.com/your-username/project1",
+                tech: ["React", "Node.js", "PostgreSQL"]
+            },
+            {
+                title: "Project Name Two",
+                description: "Another brief description highlighting your role and the tech used.",
+                link: "https://github.com/your-username/project2",
+                tech: ["Python", "FastAPI", "Redis"]
+            },
+            {
+                title: "Project Name Three",
+                description: "Describe this project — what it does, what you built, and any impact.",
+                link: "https://github.com/your-username/project3",
+                tech: ["TypeScript", "Next.js", "Prisma"]
+            }
+        ],
+
+        social: {
+            github: "https://github.com/your-username",
+            linkedin: "https://linkedin.com/in/your-profile",
+            twitter: "https://twitter.com/your-handle",
+            email: "you@example.com"
+        },
+
+        footer: "© 2026 Your Name. Built with ❤️ and clean code."
+    };
+
+    // ============================================================
+    //  ⚡ END OF CONFIG — No need to edit below this line
+    // ============================================================
+
+    // Render everything from CONFIG
+    document.getElementById('nav-logo').textContent = CONFIG.name.split(' ')[0];
+    document.getElementById('hero-badge').textContent = CONFIG.available ? "Available for work" : "Currently busy";
+    document.getElementById('hero-title').innerHTML = `Hi, I'm <span>${CONFIG.name}</span><br>${CONFIG.role}`;
+    document.getElementById('hero-subtitle').textContent = CONFIG.tagline;
+    document.getElementById('about-text').innerHTML = CONFIG.about.map(p => `<p>${p}</p>`).join('');
+    document.getElementById('about-stats').innerHTML = CONFIG.stats.map(s =>
+        `<div class="stat-card"><div class="number">${s.number}</div><div class="label">${s.label}</div></div>`
+    ).join('');
+    document.getElementById('skills-grid').innerHTML = CONFIG.skills.map(s =>
+        `<div class="skill-tag">${s}</div>`
+    ).join('');
+    document.getElementById('projects-grid').innerHTML = CONFIG.projects.map(p =>
+        `<div class="project-card">
+            <h3><a href="${p.link}" target="_blank">${p.title}</a></h3>
+            <p>${p.description}</p>
+            <div class="project-tech">${p.tech.map(t => `<span>${t}</span>`).join('')}</div>
+        </div>`
+    ).join('');
+
+    const socialIcons = {
+        github: 'fab fa-github',
+        linkedin: 'fab fa-linkedin-in',
+        twitter: 'fab fa-x-twitter',
+        email: 'fas fa-envelope'
+    };
+    document.getElementById('social-links').innerHTML = Object.entries(CONFIG.social).map(([key, url]) =>
+        `<a href="${url}" target="_blank" title="${key}"><i class="${socialIcons[key]}"></i></a>`
+    ).join('');
+    document.getElementById('footer-text').textContent = CONFIG.footer;
+    document.title = `${CONFIG.name} | ${CONFIG.role}`;
+    </script>
+</body>
+</html>   
